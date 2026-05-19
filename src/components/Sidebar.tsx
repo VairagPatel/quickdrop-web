@@ -1,10 +1,12 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   ShoppingBag, 
   Package, 
-  Users 
+  Users,
+  LogOut
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -15,6 +17,13 @@ const navItems = [
 
 export default function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <aside className="w-64 bg-[#0e0e1c] border-r border-[#1c1c2e] flex flex-col">
@@ -27,6 +36,14 @@ export default function Sidebar() {
           </h1>
         </div>
       </div>
+
+      {/* User Info */}
+      {user && (
+        <div className="p-4 border-b border-[#1c1c2e]">
+          <div className="text-sm text-[#E8E8F5] font-medium">{user.name}</div>
+          <div className="text-xs text-[#6B6B8A] font-mono mt-1">{user.role}</div>
+        </div>
+      )}
 
       {/* Navigation */}
       <nav className="flex-1 p-4">
@@ -54,8 +71,15 @@ export default function Sidebar() {
         </ul>
       </nav>
 
-      {/* Footer */}
-      <div className="p-4 border-t border-[#1c1c2e]">
+      {/* Footer with Logout */}
+      <div className="p-4 border-t border-[#1c1c2e] space-y-3">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-[#6B6B8A] hover:bg-[#12121f] hover:text-[#E8E8F5] transition-colors"
+        >
+          <LogOut size={20} />
+          <span className="font-medium">Logout</span>
+        </button>
         <div className="text-xs text-[#6B6B8A] font-mono">
           v1.0.0 • Admin Panel
         </div>

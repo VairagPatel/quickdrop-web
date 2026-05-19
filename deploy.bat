@@ -1,5 +1,5 @@
 @echo off
+git add src/vite-env.d.ts
 git add vercel.json
-git add package.json
-git commit -m "Fix: Add Vercel config and move vite to dependencies"
+git commit -m "Fix: Add Vite TypeScript definitions and env config"
 git push
